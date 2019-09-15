@@ -15,21 +15,7 @@ import java.util.ArrayList;
 public class suggest extends AppCompatActivity {
     private ArrayList<String> locations;
     private EditText number_of_locations;
-    private String[] locations_array = {"Ripley's Aquarium Of Canada",
-            "St. Lawrence Market",
-            "CN Tower",
-            "Royal Conservatory of Music",
-            "Royal Alexandra Theatre",
-            "Toronto Symphony Orchestra",
-            "Steam Whistle Brewery",
-            "Princess of Wales Theatre",
-            "The Elgin & Winter Garden Theatre Centre",
-            "Toronto Island Park",
-            "Ed Mirvish Theatre",
-            "High Park",
-            "Toronto Public Library",
-            "Four Seasons Centre for the Performing Arts",
-            "University of Toronto"};
+    private String[] locations_array = {"CN Tower", "Hockey Hall of Fame", "Hospital for Sick Children", "Hilton Toronto", "Eaton Center"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +24,11 @@ public class suggest extends AppCompatActivity {
         number_of_locations = findViewById(R.id.number_of_locations);
     }
     public void submit(View view) {
-        if (Integer.parseInt(number_of_locations.getText().toString())<=15) {
+        if (Integer.parseInt(number_of_locations.getText().toString())<=5 && !number_of_locations.getText().toString().equals("")) {
             for (int i = 0; i < Integer.parseInt(number_of_locations.getText().toString()); i++) {
                 locations.add(locations_array[i]);
             }
-            String trip = "Based on Tripadvisor's top 15 attractions in Toronto and your responses, we suggest:\n\n";
+            String trip = "Based on Tripadvisor's top 5 attractions in Toronto and your responses, we suggest:\n\n";
             for (int i = 0; i < locations.size(); i++)
                 trip += (i + 1) + ". " + locations.get(i) + "\n";
             // Create the object of
@@ -87,7 +73,7 @@ public class suggest extends AppCompatActivity {
             alertDialog.show();
             //receive data using:         ArrayList<String> locations = getIntent().getStringArrayListExtra("locations");
         } else {
-            Toast.makeText(getApplicationContext(),"Sorry, Wander can only accommodate a maximum of 15 locations ",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Sorry, Wander can only accommodate a maximum of 5 locations ",Toast.LENGTH_LONG).show();
         }
     }
 }
