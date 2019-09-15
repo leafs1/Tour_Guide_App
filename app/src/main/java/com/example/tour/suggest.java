@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -37,53 +38,56 @@ public class suggest extends AppCompatActivity {
         number_of_locations = findViewById(R.id.number_of_locations);
     }
     public void submit(View view) {
-        for (int i=0;i<Integer.parseInt(number_of_locations.getText().toString());i++){
-            locations.add(locations_array[i]);
+        if (Integer.parseInt(number_of_locations.getText().toString())<=15) {
+            for (int i = 0; i < Integer.parseInt(number_of_locations.getText().toString()); i++) {
+                locations.add(locations_array[i]);
+            }
+            String trip = "Based on Tripadvisor's top 15 attractions in Toronto and your responses, we suggest:\n\n";
+            for (int i = 0; i < locations.size(); i++)
+                trip += (i + 1) + ". " + locations.get(i) + "\n";
+            // Create the object of
+            // AlertDialog Builder class
+            AlertDialog.Builder builder
+                    = new AlertDialog
+                    .Builder(suggest.this);
+
+            // Set the message show for the Alert time
+            builder.setMessage(trip);
+
+            // Set Alert Title
+            builder.setTitle("Suggested Trip");
+
+            // Set Cancelable false
+            // for when the user clicks on the outside
+            // the Dialog Box then it will remain show
+            builder.setCancelable(false);
+
+            // Set the positive button with yes name
+            // OnClickListener method is use of
+            // DialogInterface interface.
+
+            builder
+                    .setPositiveButton(
+                            "Let's Go!",
+                            new DialogInterface
+                                    .OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+
+                                    Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                                    intent.putExtra("locations", locations);
+                                    startActivity(intent);
+                                }
+                            });
+            AlertDialog alertDialog = builder.create();
+
+            // Show the Alert Dialog box
+            alertDialog.show();
+            //receive data using:         ArrayList<String> locations = getIntent().getStringArrayListExtra("locations");
+        } else {
+            Toast.makeText(getApplicationContext(),"Sorry, Wander can only accommodate a maximum of 15 locations ",Toast.LENGTH_LONG).show();
         }
-        String trip = "";
-        for (int i = 0;i<locations.size();i++)
-            trip+=(i+1)+". "+locations.get(i)+"\n";
-        // Create the object of
-        // AlertDialog Builder class
-        AlertDialog.Builder builder
-                = new AlertDialog
-                .Builder(suggest.this);
-
-        // Set the message show for the Alert time
-        builder.setMessage(trip);
-
-        // Set Alert Title
-        builder.setTitle("Suggested Trip");
-
-        // Set Cancelable false
-        // for when the user clicks on the outside
-        // the Dialog Box then it will remain show
-        builder.setCancelable(false);
-
-        // Set the positive button with yes name
-        // OnClickListener method is use of
-        // DialogInterface interface.
-
-        builder
-                .setPositiveButton(
-                        "Let's Go!",
-                        new DialogInterface
-                                .OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which)
-                            {
-
-                                Intent intent = new Intent(getBaseContext(), MapsActivity.class);
-                                intent.putExtra("locations", locations);
-                                startActivity(intent);
-                            }
-                        });
-        AlertDialog alertDialog = builder.create();
-
-        // Show the Alert Dialog box
-        alertDialog.show();
-        //receive data using:         ArrayList<String> locations = getIntent().getStringArrayListExtra("locations");
     }
 }
